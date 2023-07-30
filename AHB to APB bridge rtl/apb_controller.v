@@ -228,134 +228,134 @@ always@(*)
                   if(hwritereg1)
                     begin  
                       paddr_temp=haddr2;
-                    pwdata_temp=hwdata1;
-                    pwrite_temp=1;
-                    pselx_temp=tempselx;
-                    penable_temp = 1;
-		    hreadyout_temp = 1;
-		   end
-                  else
-                   begin  
-                    paddr_temp=haddr3;
-                    pwdata_temp=hwdata1;
-                    pwrite_temp=1;
-                    pselx_temp=tempselx;
-                    penable_temp = 1;
-		    hreadyout_temp = 1;
-		   end
-		   
-ST_WEENABLE : if( valid == 1 && hwrite == 0)
-               begin 
-		       paddr_temp = haddr2;
-                       pwdata_temp=hwdata;
-		       pwrite_temp = hwritereg;
-		       pselx_temp = tempselx;
-		       penable_temp = 0;
-		       hreadyout_temp = 0;
-			   end
-			   else if( valid == 1 && hwrite == 1)
-		       begin
-                       paddr_temp=haddr;
-                       pwdata_temp=hwdata;
-                       pwrite_temp= hwritereg;
-		       pselx_temp = 0;
-		       penable_temp = 0;
-		       hreadyout_temp = 1;
-               end
-		       else
-			   begin
-                           paddr_temp=haddr;
-                          pwdata_temp=hwdata;
-                           pwrite_temp=1;
-			   pselx_temp = 0;
-		           penable_temp = 0;
-		           hreadyout_temp = 1;
-			   end		   
-		   
-ST_WRITEP :          if(hwritereg==0)
-                      begin
-                      paddr_temp=haddr2;
-                      pwdata_temp= hwdata1;
+                      pwdata_temp=hwdata1;
                       pwrite_temp=1;
                       pselx_temp=tempselx;
-                      penable_temp=1;
-                      hreadyout_temp=0;
-                      end
-                      else if(hwritereg3)
-                      begin
+                      penable_temp = 1;
+		      hreadyout_temp = 1;
+		   end
+                  else
+                    begin  
                       paddr_temp=haddr3;
                       pwdata_temp=hwdata1;
                       pwrite_temp=1;
                       pselx_temp=tempselx;
                       penable_temp = 1;
 		      hreadyout_temp = 1;
+		   end
+		   
+     ST_WEENABLE : if( valid == 1 && hwrite == 0)
+                     begin 
+		       paddr_temp = haddr2;
+                       pwdata_temp=hwdata;
+		       pwrite_temp = hwritereg;
+		       pselx_temp = tempselx;
+		       penable_temp = 0;
+		       hreadyout_temp = 0;
 		     end
-                     else
+		    else if( valid == 1 && hwrite == 1)
+		      begin
+                        paddr_temp=haddr;
+                        pwdata_temp=hwdata;
+                        pwrite_temp= hwritereg;
+		        pselx_temp = 0;
+		        penable_temp = 0;
+		        hreadyout_temp = 1;
+                      end
+		   else
+		     begin
+                       paddr_temp=haddr;
+                       pwdata_temp=hwdata;
+                       pwrite_temp=1;
+		       pselx_temp = 0;
+		       penable_temp = 0;
+		       hreadyout_temp = 1;
+		     end		   
+		   
+     ST_WRITEP :   if(hwritereg==0)
                      begin
+                       paddr_temp=haddr2;
+                       pwdata_temp= hwdata1;
+                       pwrite_temp=1;
+                       pselx_temp=tempselx;
+                       penable_temp=1;
+                       hreadyout_temp=0;
+                     end
+                  else if(hwritereg3)
+                    begin
+                      paddr_temp=haddr3;
+                      pwdata_temp=hwdata1;
+                      pwrite_temp=1;
+                      pselx_temp=tempselx;
+                      penable_temp = 1;
+		      hreadyout_temp = 1;
+		    end
+                  else
+                    begin
                       paddr_temp=haddr2;
                       pwdata_temp=hwdata1;
                       pwrite_temp=1;
                       pselx_temp=tempselx;
                       penable_temp = 1;
 		      hreadyout_temp = 1;
-		     end
+		    end
            
-ST_WENABLEP :        if(valid==0 && hwritereg==1)
-                      begin
+    ST_WENABLEP : if(valid==0 && hwritereg==1)
+                    begin
                       paddr_temp = haddr2;
                       pwdata_temp=hwdata;
 		      pwrite_temp = hwritereg1;
 		      pselx_temp = tempselx;
 		      penable_temp = 0;
 		      hreadyout_temp = 0;
-                      end
-                      else if(valid==1&&hwritereg==1)
-                      begin
+                    end
+                  else if(valid==1&&hwritereg==1)
+                    begin
                       paddr_temp = haddr2;
 	              pwdata_temp = hwdata;
 		      pwrite_temp = hwritereg1;
 		      pselx_temp = tempselx;
 		      penable_temp = 0;
 		      hreadyout_temp = 0;
-			  end
-		      else
-                      begin
-                      paddr_temp = haddr2;
-	              pwdata_temp = hwdata1;
-		      pwrite_temp = hwritereg1;
-		      pselx_temp = tempselx;
-		      penable_temp = 0;
-		      hreadyout_temp = 1;
+		    end
+		   else
+                     begin
+                       paddr_temp = haddr2;
+	               pwdata_temp = hwdata1;
+		       pwrite_temp = hwritereg1;
+		       pselx_temp = tempselx;
+		       penable_temp = 0;
+		       hreadyout_temp = 1;
                       end
                        
 
 			   
-endcase
-end
+      endcase
+  end
 
 // actual output logic
 
 always@(posedge hclk)
-begin
- if(!hresetn)
- begin
- paddr<= 0;
- penable<= 0;
- pselx<= 0;
- pwdata<= 0;
- pwrite<= 0;
- hreadyout<= 1;
- end
- else
- begin
- paddr<= paddr_temp;
- penable<= penable_temp;
- pselx<= pselx_temp;
- pwdata<= pwdata_temp;
- pwrite<= pwrite_temp;
- hreadyout<= hreadyout_temp;
- end
- end
+  begin
+    if(!hresetn)
+      begin
+        paddr<= 0;
+        penable<= 0;
+        pselx<= 0;
+        pwdata<= 0;
+        pwrite<= 0;
+        hreadyout<= 1;
+     end
+  else
+    begin
+      paddr<= paddr_temp;
+      penable<= penable_temp;
+      pselx<= pselx_temp;
+      pwdata<= pwdata_temp;
+      pwrite<= pwrite_temp;
+      hreadyout<= hreadyout_temp;
+   end
+end
  
  endmodule
               
