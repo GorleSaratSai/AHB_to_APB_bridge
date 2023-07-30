@@ -26,82 +26,82 @@ module ahb_slave_interface(hclk,hresetn,hwrite,hreadyin,htrans,hwdata,haddr,prda
   
   //pipelining of haddress
   always@(posedge hclk)
-  begin
-  if(!hresetn)
-	 begin
-	 haddr1<=0;
-	 haddr2<=0;
-         haddr3<=0;
-         haddr4<=0;
-	 end
-  else
     begin
-	haddr1<=haddr;
-	haddr2<=haddr1;
-        haddr3<=haddr2;
-        haddr4<=haddr3;
+      if(!hresetn)
+        begin
+	  haddr1<=0;
+	  haddr2<=0;
+          haddr3<=0;
+          haddr4<=0;
 	end
-  end
+     else
+       begin
+	 haddr1<=haddr;
+	 haddr2<=haddr1;
+         haddr3<=haddr2;
+         haddr4<=haddr3;
+       end
+     end
   //pipelining of hwdata
   always@(posedge hclk)
-  begin
-  if(!hresetn)
-	 begin
-	 hwdata1<=0;
-	 hwdata2<=0;
-         hwdata3<=0;
-         hwdata4<=0;
-	 end
-  else
     begin
-	hwdata1<=hwdata;
-	hwdata2<=hwdata1;
-        hwdata3<=hwdata2;
-        hwdata4<=hwdata3;
+      if(!hresetn)
+        begin
+	  hwdata1<=0;
+	  hwdata2<=0;
+          hwdata3<=0;
+          hwdata4<=0;
+        end
+      else
+        begin
+	  hwdata1<=hwdata;
+	  hwdata2<=hwdata1;
+          hwdata3<=hwdata2;
+          hwdata4<=hwdata3;
 	end
-  end
+     end
   //pipelining of hwrite
   always@(posedge hclk)
-  begin
-  if(!hresetn)
-	 begin
-	 hwritereg<=0;
-	 hwritereg1<=0;
-         hwritereg2<=0;
-         hwritereg3<=0;
-	 end
-  else
     begin
-	hwritereg<=hwrite;
-	hwritereg1<=hwritereg;
-        hwritereg2<=hwritereg1;
-        hwritereg3<=hwritereg2;
-	end
-  end
+      if(!hresetn)
+        begin
+	  hwritereg<=0;
+	  hwritereg1<=0;
+          hwritereg2<=0;
+          hwritereg3<=0;
+	 end
+     else
+       begin
+         hwritereg<=hwrite;
+	 hwritereg1<=hwritereg;
+         hwritereg2<=hwritereg1;
+         hwritereg3<=hwritereg2;
+       end
+    end
   
   always@(*)
-   begin
-   if(hreadyin==1 && (haddr >=32'h8000_0000 && haddr<32'h8c00_0000) && (htrans==2'b10||htrans==2'b11))
-   begin 
-	valid=1;
+    begin
+      if(hreadyin==1 && (haddr >=32'h8000_0000 && haddr<32'h8c00_0000) && (htrans==2'b10||htrans==2'b11))
+        begin 
+	  valid=1;
 	end
-   else
-	begin
-   valid=0;
-	end
-   end
+      else
+        begin
+          valid=0;
+        end
+    end
   
   always@(*)
-   begin 
-   if( (haddr>=32'h8000_0000 && haddr<32'h8400_0000) )
-   tempselx=3'b001;
-   else if((haddr>=32'h8400_0000 && haddr<32'h8800_0000) )
-   tempselx=3'b010;
-   else if( (haddr>=32'h8800_0000 && haddr<32'h8c00_0000) )
-   tempselx=3'b100;
-   else
-   tempselx=3'b000;
-   end
+    begin 
+      if( (haddr>=32'h8000_0000 && haddr<32'h8400_0000) )
+        tempselx=3'b001;
+      else if((haddr>=32'h8400_0000 && haddr<32'h8800_0000) )
+        tempselx=3'b010;
+      else if( (haddr>=32'h8800_0000 && haddr<32'h8c00_0000) )
+        tempselx=3'b100;
+      else
+        tempselx=3'b000;
+    end
   
   assign hrdata=prdata;
   assign hresp=2'b00;
