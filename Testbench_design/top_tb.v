@@ -29,32 +29,32 @@ bridge_top BRIDGE(hclk,hresetn,hwrite,hreadyin,htrans,hwdata,haddr,prdata,penabl
 apb_interface APB(pwrite,penable,pselx,paddr,pwdata,pwriteout,penableout,pselxout,paddrout,pwdataout,prdata);
 
 initial
-begin
-hclk=1'b0;
-forever
-#10 hclk=~hclk;
-end
+  begin
+    hclk=1'b0;
+    forever
+    #10 hclk=~hclk;
+  end
 
 task reset;
-begin
-@(negedge hclk);//driving reset at negedge of hclk for sability & maintain setup ime violation.
-hresetn=1'b0;
-@(negedge hclk);
-hresetn=1'b1;
-end
+  begin
+    @(negedge hclk);//driving reset at negedge of hclk for sability & maintain setup ime violation.
+      hresetn=1'b0;
+    @(negedge hclk);
+      hresetn=1'b1;
+  end
 endtask
 
 initial
-begin
-reset;
-//AHB.single_write();
-//AHB.single_read();
-//AHB.burst_4_incr_write();
-//AHB.burst_inc4_read();
-AHB.back_2_back();
-end
+  begin
+    reset;
+      //AHB.single_write();
+      //AHB.single_read();
+      //AHB.burst_4_incr_write();
+     //AHB.burst_inc4_read();
+      AHB.back_2_back();
+  end
 
 initial
-#800 $finish;
+  #800 $finish;
 
 endmodule
