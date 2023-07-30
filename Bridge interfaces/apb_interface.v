@@ -19,11 +19,11 @@ assign pwdataout =pwdata;
 assign penableout =penable;
 
 always@(*)
-begin 
-if(!pwrite&&penable)
-prdata={$random}%256;
-else
-prdata=32'h0;
-end
+  begin 
+    if(!pwrite&&penable)
+      prdata={$random}%256;
+    else
+      prdata=32'h0;
+  end
 
 endmodule
